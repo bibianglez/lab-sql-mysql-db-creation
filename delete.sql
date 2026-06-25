@@ -1,5 +1,5 @@
 USE lab_mysql;
 SET SQL_SAFE_UPDATES = 0;
-DELETE FROM `CARS`
+DELETE FROM `cars`
 WHERE `car_id` = 4;
 SET SQL_SAFE_UPDATES = 1;
