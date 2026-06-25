@@ -1,68 +1,58 @@
 CREATE DATABASE IF NOT EXISTS lab_mysql;
-
 USE lab_mysql;
 
-CREATE TABLE IF NOT EXISTS `invoices` (
-	`invoice_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-	`date` DATE NOT NULL,
-	`invoice_n` INTEGER NOT NULL,
-	`customer_id` INTEGER NOT NULL,
-	`car_id` INTEGER NOT NULL,
-	`salesperson_id` INTEGER NOT NULL,
-	PRIMARY KEY(`invoice_id`)
-);
 
-
-CREATE TABLE IF NOT EXISTS `salesperson` (
+CREATE TABLE IF NOT EXISTS `salespersons` (
 	`salesperson_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+	`staff_id` VARCHAR(50) NOT NULL UNIQUE, -- Se cambia a VARCHAR para mantener los ceros a la izquierda (ej. '00001')
 	`name` VARCHAR(255) NOT NULL,
 	`store` VARCHAR(255) NOT NULL,
-	`staff_id` INTEGER NOT NULL,
 	PRIMARY KEY(`salesperson_id`)
 );
 
-
 CREATE TABLE IF NOT EXISTS `cars` (
 	`car_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-	`vin` VARCHAR(255) NOT NULL,
-	`manofacturer` VARCHAR(255) NOT NULL,
+	`vin` VARCHAR(255) NOT NULL UNIQUE,
+	`manufacturer` VARCHAR(255) NOT NULL, 
 	`model` VARCHAR(255) NOT NULL,
 	`year` YEAR NOT NULL,
 	`color` VARCHAR(255) NOT NULL,
 	PRIMARY KEY(`car_id`)
 );
 
-
 CREATE TABLE IF NOT EXISTS `customers` (
 	`customer_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255) NOT NULL,
 	`email` VARCHAR(255) NOT NULL,
-	`phone` INTEGER NOT NULL,
-	`address_id` INTEGER NOT NULL,
+	`phone` VARCHAR(50) NOT NULL, 
 	PRIMARY KEY(`customer_id`)
 );
 
 
-CREATE TABLE IF NOT EXISTS `address` (
-	`address_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-	`address` VARCHAR(255) NOT NULL,
-	`city` VARCHAR(255) NOT NULL,
-	`state` VARCHAR(255) NOT NULL,
-	`country` VARCHAR(255) NOT NULL,
-	`pc` VARCHAR(255) NOT NULL,
-	PRIMARY KEY(`address_id`)
+
+CREATE TABLE IF NOT EXISTS `invoices` (
+	`invoice_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+	`date` DATE NOT NULL,
+	`invoice_n` INTEGER NOT NULL UNIQUE,
+	`customer_id` INTEGER UNSIGNED NOT NULL, 
+	`car_id` INTEGER UNSIGNED NOT NULL,       
+	`salesperson_id` INTEGER UNSIGNED NOT NULL, 
+	PRIMARY KEY(`invoice_id`)
 );
 
 
-ALTER TABLE `salesperson`
-ADD FOREIGN KEY(`salesperson_id`) REFERENCES `invoices`(`salesperson_id`)
-ON UPDATE CASCADE ON DELETE CASCADE;
-ALTER TABLE `cars`
-ADD FOREIGN KEY(`car_id`) REFERENCES `invoices`(`car_id`)
-ON UPDATE CASCADE ON DELETE CASCADE;
-ALTER TABLE `customers`
-ADD FOREIGN KEY(`customer_id`) REFERENCES `invoices`(`customer_id`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
-ALTER TABLE `customers`
-ADD FOREIGN KEY(`address_id`) REFERENCES `address`(`address_id`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+ALTER TABLE `invoices`
+ADD CONSTRAINT `fk_invoices_salespersons`
+FOREIGN KEY(`salesperson_id`) REFERENCES `salespersons`(`salesperson_id`)
+ON UPDATE CASCADE ON DELETE RESTRICT;
+
+ALTER TABLE `invoices`
+ADD CONSTRAINT `fk_invoices_cars`
+FOREIGN KEY(`car_id`) REFERENCES `cars`(`car_id`)
+ON UPDATE CASCADE ON DELETE RESTRICT;
+
+ALTER TABLE `invoices`
+ADD CONSTRAINT `fk_invoices_customers`
+FOREIGN KEY(`customer_id`) REFERENCES `customers`(`customer_id`)
+ON UPDATE CASCADE ON DELETE RESTRICT;
