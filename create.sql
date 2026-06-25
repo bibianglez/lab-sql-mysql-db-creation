@@ -4,65 +4,65 @@ USE lab_mysql;
 
 CREATE TABLE IF NOT EXISTS `invoices` (
 	`invoice_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-	`date` DATE,
-	`invoice_n` INTEGER,
-	`customer_id` INTEGER,
-	`car_id` INTEGER,
-	`salesperson_id` INTEGER,
+	`date` DATE NOT NULL,
+	`invoice_n` INTEGER NOT NULL,
+	`customer_id` INTEGER NOT NULL,
+	`car_id` INTEGER NOT NULL,
+	`salesperson_id` INTEGER NOT NULL,
 	PRIMARY KEY(`invoice_id`)
 );
 
 
 CREATE TABLE IF NOT EXISTS `salesperson` (
 	`salesperson_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(255),
-	`store` VARCHAR(255),
-	`staff_id` INTEGER,
+	`name` VARCHAR(255) NOT NULL,
+	`store` VARCHAR(255) NOT NULL,
+	`staff_id` INTEGER NOT NULL,
 	PRIMARY KEY(`salesperson_id`)
 );
 
 
 CREATE TABLE IF NOT EXISTS `cars` (
 	`car_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-	`vin` VARCHAR(255),
-	`manofacturer` VARCHAR(255),
-	`model` VARCHAR(255),
-	`year` YEAR,
-	`color` VARCHAR(255),
+	`vin` VARCHAR(255) NOT NULL,
+	`manofacturer` VARCHAR(255) NOT NULL,
+	`model` VARCHAR(255) NOT NULL,
+	`year` YEAR NOT NULL,
+	`color` VARCHAR(255) NOT NULL,
 	PRIMARY KEY(`car_id`)
 );
 
 
 CREATE TABLE IF NOT EXISTS `customers` (
 	`customer_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(255),
-	`email` VARCHAR(255),
-	`phone` INTEGER,
-	`address_id` INTEGER,
+	`name` VARCHAR(255) NOT NULL,
+	`email` VARCHAR(255) NOT NULL,
+	`phone` INTEGER NOT NULL,
+	`address_id` INTEGER NOT NULL,
 	PRIMARY KEY(`customer_id`)
 );
 
 
 CREATE TABLE IF NOT EXISTS `address` (
 	`address_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-	`address` VARCHAR(255),
-	`city` VARCHAR(255),
-	`state` VARCHAR(255),
-	`country` VARCHAR(255),
-	`pc` VARCHAR(255),
+	`address` VARCHAR(255) NOT NULL,
+	`city` VARCHAR(255) NOT NULL,
+	`state` VARCHAR(255) NOT NULL,
+	`country` VARCHAR(255) NOT NULL,
+	`pc` VARCHAR(255) NOT NULL,
 	PRIMARY KEY(`address_id`)
 );
 
 
 ALTER TABLE `salesperson`
 ADD FOREIGN KEY(`salesperson_id`) REFERENCES `invoices`(`salesperson_id`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
+ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE `cars`
 ADD FOREIGN KEY(`car_id`) REFERENCES `invoices`(`car_id`)
-ON UPDATE NO ACTION ON DELETE NO ACTION;
+ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE `customers`
 ADD FOREIGN KEY(`customer_id`) REFERENCES `invoices`(`customer_id`)
 ON UPDATE NO ACTION ON DELETE NO ACTION;
-ALTER TABLE `address`
-ADD FOREIGN KEY(`address_id`) REFERENCES `customers`(`address_id`)
+ALTER TABLE `customers`
+ADD FOREIGN KEY(`address_id`) REFERENCES `address`(`address_id`)
 ON UPDATE NO ACTION ON DELETE NO ACTION;

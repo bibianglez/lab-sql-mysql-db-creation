@@ -2,15 +2,15 @@
  
  SET SQL_SAFE_UPDATES = 0;
  
-UPDATE `CUSTOMERS` 
+UPDATE `customers` 
 SET `email` = 'ppicasso@gmail.com' 
 WHERE `name` = 'Pablo Picasso';
 
-UPDATE `CUSTOMERS`
+UPDATE `customers`
 SET `email` = 'lincoln@us.gov'
 WHERE `name` = 'Abraham Lincoln';
 
-UPDATE `CUSTOMERS`
+UPDATE `customers`
 SET `email` = 'hello@napoleon.me'
 WHERE `name` = 'Napoléon Bonaparte';
 
